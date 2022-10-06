@@ -24,9 +24,9 @@ public static class ConfigureServices
         }
         else
         {
+            string connectionString = configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
-                    builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
+                options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
         }
 
         services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
